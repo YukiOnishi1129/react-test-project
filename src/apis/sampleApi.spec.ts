@@ -27,7 +27,10 @@ describe('【APIテスト】sampleApi test', () => {
       // mock関数の戻り値を設定する
       const apiMockFunc = apiMock.mockReturnValue(Promise.resolve(sampleState))
 
+      // mock関数の戻り値を検証
       expect(await apiMockFunc(targetId)).toEqual(sampleState)
+      // mock関数に指定した引数を検証
+      expect(apiMockFunc.mock.calls[0][0]).toBe(1)
     })
 
     test('【異常系】処理が失敗する。apiの戻り値がundefinedの場合', async () => {
@@ -37,7 +40,10 @@ describe('【APIテスト】sampleApi test', () => {
       // mock関数の戻り値を設定する (undefined)
       const apiMockFunc = apiMock.mockReturnValue(Promise.resolve(undefined))
 
+      // mock関数の戻り値を検証
       expect(await apiMockFunc(targetId)).toEqual(undefined)
+      // mock関数に指定した引数を検証
+      expect(apiMockFunc.mock.calls[0][0]).toBe(0)
     })
 
     test('【異常系】処理が失敗する。例外処理が発生した場合', async () => {
@@ -52,6 +58,8 @@ describe('【APIテスト】sampleApi test', () => {
       } catch (error) {
         expect(error).toMatch('error')
       }
+      // mock関数に指定した引数を検証
+      expect(apiMockFunc.mock.calls[0][0]).toBe(-1)
     })
   })
 })
